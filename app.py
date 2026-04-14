@@ -6,14 +6,16 @@ from flask_login import LoginManager
 from config import Config
 from auth import User
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+# Flask app
+app = Flask(__name__, template_folder='templates')
 app.config.from_object(Config)
 
-# Serve existing assets from project root /assets/...
+# Serve assets from /assets
 @app.route('/assets/<path:path>')
 def asset(path):
     return send_from_directory(os.path.join(app.root_path, 'assets'), path)
 
+# Login manager
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.login'
 login_manager.login_message = 'Please log in to access this page.'
@@ -38,22 +40,17 @@ app.register_blueprint(shopkeeper_bp, url_prefix='/shopkeeper')
 app.register_blueprint(farmer_bp, url_prefix='/farmer')
 app.register_blueprint(api_bp, url_prefix='/api')
 
-# Create uploads dir
+# Ensure uploads folder exists
 Config.UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
-
+# Disable caching for authenticated pages
 @app.after_request
 def add_cache_control_headers(response):
-    """
-    Prevent browsers from serving cached versions of authenticated pages.
-    This helps ensure that after logout, using the Back button doesn't
-    show old dashboard content; the browser must re-request the page and
-    Flask-Login will redirect to login if not authenticated.
-    """
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
 
+# Local development only
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
