@@ -1,0 +1,46 @@
+{% extends "layouts/user_master.html" %}
+{% block title %}Checkout - Farmer{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Checkout</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('farmer.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Checkout</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  {% if not shop or not cart %}
+  <p>Your cart is empty or shop not selected. <a href="{{ url_for('farmer.shops') }}">Browse shops</a>.</p>
+  {% else %}
+  <h5>{{ shop.name }}</h5>
+  <div class="table-responsive mb-4">
+    <table class="table">
+      <thead><tr><th>Item</th><th>Qty</th><th>Price/unit</th><th>Total</th></tr></thead>
+      <tbody>
+        {% for it in cart %}
+        <tr>
+          <td>{{ it.name }}</td>
+          <td>{{ it.quantity }}</td>
+          <td>₹{{ "%.2f"|format(it.price_per_unit) }}</td>
+          <td>₹{{ "%.2f"|format(it.quantity * it.price_per_unit) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Total: ₹{{ "%.2f"|format(total) }}</strong></p>
+  <form method="post" action="{{ url_for('farmer.checkout') }}">
+    <input type="hidden" name="shop_id" value="{{ shop.id }}">
+    <div class="form-group">
+      <label>Payment: Demo UPI</label>
+      <p class="text-muted small">This is a demo. No real payment is charged. Click Pay to complete the order.</p>
+    </div>
+    <button type="submit" class="btn btn-style btn-primary">Pay (Demo UPI)</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

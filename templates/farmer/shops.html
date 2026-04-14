@@ -1,0 +1,33 @@
+{% extends "layouts/user_master.html" %}
+{% block title %}Shops - Farmer{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Fertilizer Shops</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('farmer.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Shops</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <div class="row">
+    {% for s in shops %}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ s.name }}</h5>
+          <p class="card-text small text-muted">{{ s.address or 'No address' }}</p>
+          <p class="card-text small">Contact: {{ s.phone or '-' }}</p>
+          <a href="{{ url_for('farmer.shop_products', shop_id=s.id) }}" class="btn btn-style btn-primary btn-sm">View products & prices</a>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-12"><p>No shops registered yet.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "layouts/home_master.html" %}
+{% block title %}About - AgroHands AI{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">About Us</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> About</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="w3l-cta4 py-5">
+  <div class="container py-lg-5">
+    <h6 class="sub-title">About AgroHands AI</h6>
+    <h3 class="hny-title">Fertilizer inventory management for rural shops</h3>
+    <p class="py-3">Rural fertilizer shops often face stock shortages and errors due to manual bookkeeping. AgroHands AI uses AI-based text recognition (OCR) to extract item details from uploaded bills, update stock automatically, and support digital payments so farmers get fertilizers on time.</p>
+    <p>We help reduce human error, prevent stock-outs, and bring transparency to inventory and billing.</p>
+  </div>
+</section>
+{% endblock %}

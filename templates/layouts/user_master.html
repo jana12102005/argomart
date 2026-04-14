@@ -1,0 +1,18 @@
+{% extends "layouts/base.html" %}
+{# User master: farmer pages - Dashboard, Shops, My Orders, Logout #}
+
+{% block nav %}
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('farmer.dashboard') }}">Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('farmer.shops') }}">Shops</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('farmer.orders') }}">My Orders</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+</ul>
+{% endblock %}
+
+{% block nav_right %}
+<div class="d-lg-block d-none">
+  <span class="text-muted small mr-2">{{ current_user.name }}</span>
+</div>
+{% endblock %}

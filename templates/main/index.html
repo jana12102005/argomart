@@ -1,0 +1,60 @@
+{% extends "layouts/home_master.html" %}
+{% block title %}AgroHands AI - Fertilizer Inventory & Digital Payments{% endblock %}
+{% block content %}
+<section class="w3l-main-slider" id="home">
+  <div class="companies20-content">
+    <div class="slider-info banner-view bg bg2">
+      <div class="banner-info">
+        <div class="container">
+          <div class="banner-info-bg text-left">
+            <p>AgroHands AI</p>
+            <h5>Smart Fertilizer Inventory for Rural Shops</h5>
+            <p class="mt-2">OCR-based bill processing • Real-time stock • Digital payments</p>
+            <a href="/auth/login" class="btn btn-white mr-2" onclick="location.assign(location.origin + '/auth/login'); return false;">Login</a>
+            <a href="/auth/register" class="btn btn-white" onclick="location.assign(location.origin + '/auth/register'); return false;">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="w3l-grids-3 py-5" id="about">
+  <div class="container py-md-5">
+    <div class="row bottom-ab-grids align-items-center">
+      <div class="col-lg-6 bottom-ab-left pr-lg-5">
+        <h6 class="sub-title">About AgroHands AI</h6>
+        <h3 class="hny-title">Automated Inventory from Bills</h3>
+        <p class="my-3 pr-lg-4">Upload purchase or sales bills; our AI extracts fertilizer names, quantities, and amounts. Stock updates instantly. No manual entry, fewer errors, and farmers get fertilizers on time.</p>
+        <a href="{{ url_for('main.about') }}" class="btn btn-style btn-secondary mt-4">Read More</a>
+      </div>
+      <div class="col-lg-6 bottom-ab-right mt-lg-0 mt-5">
+        <img src="/assets/images/ab3.jpg" class="img-curve img-fluid" alt="" onerror="this.style.display='none'"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="w3l-services1 py-5">
+  <div class="container py-md-5">
+    <h6 class="sub-title">What We Offer</h6>
+    <h3 class="hny-title">For Shopkeepers & Farmers</h3>
+    <ul class="cont-4 mt-4">
+      <li><span class="fa fa-check"></span> OCR extraction from bills (purchase/sale)</li>
+      <li><span class="fa fa-check"></span> Real-time inventory updates</li>
+      <li><span class="fa fa-check"></span> Low-stock alerts</li>
+      <li><span class="fa fa-check"></span> Daily, weekly, monthly reports</li>
+      <li><span class="fa fa-check"></span> Farmers: browse availability & pricing</li>
+      <li><span class="fa fa-check"></span> UPI-style digital payment (demo)</li>
+    </ul>
+  </div>
+</section>
+
+<section class="w3l-bottom py-5">
+  <div class="container py-md-4 py-3 text-center">
+    <h3 class="hny-title two">Ready to modernize your fertilizer shop?</h3>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-style btn-primary mt-4">Register as Shopkeeper</a>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-style btn-secondary mt-4 ml-2">Register as Farmer</a>
+  </div>
+</section>
+{% endblock %}

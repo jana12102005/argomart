@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}AgroHands AI - Agromart{% endblock %}</title>
+  <link href="//fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style-starter.css">
+  <style>
+    #site-header { z-index: 1040; }
+    #site-header .navbar-nav .nav-link { pointer-events: auto; cursor: pointer; position: relative; z-index: 1; }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header id="site-header" class="fixed-top">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg stroke">
+        <h1><a class="navbar-brand mr-lg-5" href="{{ url_for('main.home') }}">Agro<span>mart</span></a></h1>
+        <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse"
+          data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+          <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          {% block nav %}{% endblock %}
+        </div>
+        {% block nav_right %}{% endblock %}
+        <div class="mobile-position">
+          <nav class="navigation">
+            <div class="theme-switch-wrapper">
+              <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox">
+                <div class="mode-container"><i class="gg-sun"></i><i class="gg-moon"></i></div>
+              </label>
+            </div>
+          </nav>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+
+  <section class="w3l-footer-29-main">
+    <div class="footer-29 py-5">
+      <div class="container py-lg-4">
+        <div class="row footer-top-29">
+          <div class="footer-list-29 col-lg-4">
+            <h6 class="footer-title-29">AgroHands AI</h6>
+            <p class="pr-lg-5">Automated fertilizer inventory management with OCR-based bill processing and digital payments for rural agricultural shops.</p>
+            <div class="main-social-footer-29 mt-4">
+              <a href="#facebook" class="facebook"><span class="fa fa-facebook"></span></a>
+              <a href="#twitter" class="twitter"><span class="fa fa-twitter"></span></a>
+              <a href="#instagram" class="instagram"><span class="fa fa-instagram"></span></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 footer-list-29 footer-2 mt-lg-0 mt-5">
+            <ul>
+              <h6 class="footer-title-29">Links</h6>
+              <li><a href="{{ url_for('main.home') }}">Home</a></li>
+              <li><a href="{{ url_for('main.about') }}">About</a></li>
+              <li><a href="{{ url_for('main.services') }}">Services</a></li>
+              <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 footer-list-29 footer-3 mt-lg-0 mt-5">
+            <ul>
+              <h6 class="footer-title-29">For</h6>
+              <li><a href="/auth/login" onclick="location.assign(location.origin + '/auth/login'); return false;">Login</a></li>
+              <li><a href="/auth/register" onclick="location.assign(location.origin + '/auth/register'); return false;">Register</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="w3l-footer-29-main w3l-copyright">
+    <div class="container">
+      <p class="copy-footer-29 text-center">© 2025 AgroHands AI - Agromart. All rights reserved.</p>
+    </div>
+    <button onclick="topFunction()" id="movetop" title="Go to top"><span class="fa fa-angle-up"></span></button>
+  </section>
+
+  <script src="/assets/js/jquery-3.3.1.min.js"></script>
+  <script src="/assets/js/theme-change.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
+  <script>
+    window.onscroll = function() { scrollFunction(); };
+    function scrollFunction() {
+      var btn = document.getElementById("movetop");
+      if (btn) btn.style.display = (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) ? "block" : "none";
+    }
+    function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
+    $(function() {
+      $('.navbar-toggler').click(function() { $('body').toggleClass('noscroll'); });
+      $('.navbar-toggler').attr('data-toggle', 'collapse').attr('data-target', '#navbarTogglerDemo02');
+    });
+    $(window).on("scroll", function() {
+      if ($(window).scrollTop() >= 80) $("#site-header").addClass("nav-fixed");
+      else $("#site-header").removeClass("nav-fixed");
+    });
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

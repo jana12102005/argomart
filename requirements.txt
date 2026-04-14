@@ -1,0 +1,10 @@
+# AgroHands AI / Agromart - Backend
+Flask==3.0.0
+Flask-Login==0.6.3
+PyMySQL==1.1.0
+bcrypt==4.1.1
+cryptography==41.0.7
+Pillow==10.1.0
+easyocr==1.7.1
+numpy==1.26.2
+Werkzeug==3.0.1

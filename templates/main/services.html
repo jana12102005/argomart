@@ -1,0 +1,37 @@
+{% extends "layouts/home_master.html" %}
+{% block title %}Services - AgroHands AI{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Services</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Services</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="w3l-cta5 py-5">
+  <div class="container py-lg-5">
+    <h3 class="hny-title">What AgroHands AI Provides</h3>
+    <div class="row mt-5">
+      <div class="col-lg-4 col-md-6 mt-4">
+        <div class="icon"><span class="fa fa-file-image-o"></span></div>
+        <h4 class="mt-3">Bill OCR</h4>
+        <p>Upload purchase or sales bills; AI extracts fertilizer name, quantity, and price to update inventory automatically.</p>
+      </div>
+      <div class="col-lg-4 col-md-6 mt-4">
+        <div class="icon"><span class="fa fa-database"></span></div>
+        <h4 class="mt-3">Real-time Inventory</h4>
+        <p>Stock levels update from every bill. Low-stock alerts keep shop owners informed.</p>
+      </div>
+      <div class="col-lg-4 col-md-6 mt-4">
+        <div class="icon"><span class="fa fa-credit-card"></span></div>
+        <h4 class="mt-3">Digital Payment (Demo)</h4>
+        <p>Farmers can complete orders with a demo UPI-style flow for fast, transparent transactions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

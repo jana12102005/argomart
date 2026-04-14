@@ -1,0 +1,48 @@
+{% extends "layouts/user_master.html" %}
+{% block title %}{{ shop.name }} - Products{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">{{ shop.name }}</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('farmer.shops') }}">Shops</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Products</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <p class="text-muted">{{ shop.address or '' }} — {{ shop.phone or '' }}</p>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr><th>Fertilizer</th><th>Unit</th><th>Available</th><th>Price/unit (₹)</th><th>Order</th></tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td>{{ p.name }}</td>
+          <td>{{ p.unit }}</td>
+          <td>{{ p.quantity }}</td>
+          <td>{{ "%.2f"|format(p.price_per_unit or 0) }}</td>
+          <td>
+            <form method="post" action="{{ url_for('farmer.add_to_cart') }}" class="form-inline">
+              <input type="hidden" name="shop_id" value="{{ shop.id }}">
+              <input type="hidden" name="fertilizer_id" value="{{ p.fertilizer_id }}">
+              <input type="hidden" name="name" value="{{ p.name }}">
+              <input type="hidden" name="price_per_unit" value="{{ p.price_per_unit }}">
+              <input type="number" name="quantity" min="0.1" step="0.1" value="1" class="form-control form-control-sm mr-1" style="width:80px">
+              <button type="submit" class="btn btn-sm btn-style btn-primary">Add to cart</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No products in stock.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <a href="{{ url_for('farmer.checkout', shop_id=shop.id) }}" class="btn btn-style btn-secondary">Go to checkout</a>
+</div>
+{% endblock %}

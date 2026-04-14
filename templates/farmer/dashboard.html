@@ -1,0 +1,21 @@
+{% extends "layouts/user_master.html" %}
+{% block title %}Dashboard - Farmer{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Dashboard</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Farmer</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <p class="lead">Hello, {{ current_user.name }}.</p>
+  <p>Browse fertilizer shops, check availability and prices, and place orders with demo UPI payment.</p>
+  <a href="{{ url_for('farmer.shops') }}" class="btn btn-style btn-primary">Browse Shops</a>
+  <a href="{{ url_for('farmer.orders') }}" class="btn btn-style btn-secondary ml-2">My Orders</a>
+</div>
+{% endblock %}

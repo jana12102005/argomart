@@ -1,0 +1,41 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Inventory - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Inventory</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Inventory</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <a href="{{ url_for('shopkeeper.upload_bill') }}" class="btn btn-style btn-primary mb-2">Upload Purchase Bill (OCR)</a>
+  <a href="{{ url_for('shopkeeper.inventory_add') }}" class="btn btn-style btn-secondary mb-2 ml-2">Add Stock (Manual)</a>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr><th>Fertilizer</th><th>Unit</th><th>Quantity</th><th>Price/unit (₹)</th><th>Updated</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr class="{% if item.quantity <= 10 %}table-warning{% endif %}">
+          <td>{{ item.name }}</td>
+          <td>{{ item.unit }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ "%.2f"|format(item.price_per_unit or 0) }}</td>
+          <td>{{ item.updated_at.strftime('%Y-%m-%d %H:%M') if item.updated_at else '-' }}</td>
+          <td><a href="{{ url_for('shopkeeper.inventory_adjust', inv_id=item.id) }}" class="btn btn-sm btn-outline-primary">Adjust</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No inventory yet. Upload a purchase bill or add stock manually.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="text-muted small">Rows in yellow are low stock (≤10). Use Upload Bill (OCR) or Add Stock to increase.</p>
+</div>
+{% endblock %}

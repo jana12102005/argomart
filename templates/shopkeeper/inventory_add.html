@@ -1,0 +1,39 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Add Stock - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Add Stock</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('shopkeeper.inventory') }}">Inventory</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Add Stock</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <form method="post" action="{{ url_for('shopkeeper.inventory_add') }}">
+    <div class="form-group">
+      <label>Fertilizer</label>
+      <select name="fertilizer_id" class="form-control" required>
+        <option value="">-- Select --</option>
+        {% for f in fertilizers %}
+        <option value="{{ f.id }}">{{ f.name }} ({{ f.unit }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Quantity</label>
+      <input type="number" name="quantity" min="0.01" step="0.01" class="form-control" required placeholder="e.g. 100">
+    </div>
+    <div class="form-group">
+      <label>Price per unit (₹)</label>
+      <input type="number" name="price_per_unit" min="0" step="0.01" class="form-control" value="0" placeholder="0">
+    </div>
+    <button type="submit" class="btn btn-style btn-primary">Add Stock</button>
+    <a href="{{ url_for('shopkeeper.inventory') }}" class="btn btn-outline-secondary">Back to Inventory</a>
+  </form>
+</div>
+{% endblock %}

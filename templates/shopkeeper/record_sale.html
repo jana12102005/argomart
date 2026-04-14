@@ -1,0 +1,55 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Record Sale - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Record Sale</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('shopkeeper.sales') }}">Sales</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Record Sale</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <form method="post" action="{{ url_for('shopkeeper.record_sale') }}">
+    <div class="form-group">
+      <label>Customer</label>
+      <select name="farmer_id" class="form-control" required>
+        <option value="">-- Select --</option>
+        {% for f in farmers %}
+        <option value="{{ f.id }}">{{ f.name }}{% if f.email == 'walkin@agromart.local' %} (Walk-in){% endif %}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="table-responsive mb-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr><th>Product</th><th>Available</th><th>Unit</th><th>Qty</th><th>Price/unit (₹)</th></tr>
+        </thead>
+        <tbody>
+          {% for inv in inventory %}
+          <tr>
+            <td>{{ inv.name }}</td>
+            <td>{{ inv.quantity }}</td>
+            <td>{{ inv.unit }}</td>
+            <td>
+              <input type="number" name="qty_{{ inv.fertilizer_id }}" min="0" step="0.01" value="0" class="form-control form-control-sm" style="width:90px">
+            </td>
+            <td>
+              <input type="number" name="price_{{ inv.fertilizer_id }}" min="0" step="0.01" value="{{ inv.price_per_unit }}" class="form-control form-control-sm" style="width:100px">
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5">No stock. Add inventory first.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <button type="submit" class="btn btn-style btn-primary">Save Sale</button>
+    <a href="{{ url_for('shopkeeper.sales') }}" class="btn btn-outline-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

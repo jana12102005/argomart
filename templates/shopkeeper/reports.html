@@ -1,0 +1,44 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Reports - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Reports</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Reports</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <div class="btn-group mb-4">
+    <a href="{{ url_for('shopkeeper.reports', period='daily') }}" class="btn btn-sm {{ 'btn-primary' if period == 'daily' else 'btn-outline-secondary' }}">Daily</a>
+    <a href="{{ url_for('shopkeeper.reports', period='weekly') }}" class="btn btn-sm {{ 'btn-primary' if period == 'weekly' else 'btn-outline-secondary' }}">Weekly</a>
+    <a href="{{ url_for('shopkeeper.reports', period='monthly') }}" class="btn btn-sm {{ 'btn-primary' if period == 'monthly' else 'btn-outline-secondary' }}">Monthly</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>{% if period == 'daily' %}Date{% elif period == 'weekly' %}Week{% else %}Month{% endif %}</th>
+          <th>Orders</th>
+          <th>Revenue (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in report_rows %}
+        <tr>
+          <td>{{ row.dt or row.wk or row.mn }}</td>
+          <td>{{ row.orders }}</td>
+          <td>{{ "%.2f"|format(row.revenue or 0) }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3">No data for this period.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

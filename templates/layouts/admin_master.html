@@ -1,0 +1,46 @@
+{% extends "layouts/base.html" %}
+{# Admin master: shopkeeper pages - Dashboard, Upload Bill, Inventory, Reports, Logout #}
+
+{% block nav %}
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a>
+  </li>
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="shopMenu" role="button"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Shop Operations <span class="small">▾</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="shopMenu">
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.upload_bill') }}">Upload Purchase Bill (OCR)</a>
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.bills') }}">Bills</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.inventory') }}">Inventory</a>
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.inventory_add') }}">Add Stock (Manual)</a>
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.record_sale') }}">Record Sale</a>
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.sales') }}">Sales</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{{ url_for('shopkeeper.reports') }}">Reports</a>
+    </div>
+  </li>
+
+</ul>
+{% endblock %}
+
+{% block nav_right %}
+<div class="d-lg-block d-none dropdown ml-3">
+  <a class="nav-link dropdown-toggle p-0" href="#" id="userMenu" role="button"
+     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{ current_user.name or 'Account' }} <span class="small">▾</span>
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+    <a class="dropdown-item" href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+  </div>
+</div>
+{% endblock %}

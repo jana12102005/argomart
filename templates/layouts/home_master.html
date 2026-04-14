@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+{# Home master: public pages - Home, About Us, Services, Contact, Login, Register #}
+
+{% block nav %}
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('main.home') }}">Home</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">About Us</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('main.services') }}">Services</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a></li>
+  <li class="nav-item"><a class="nav-link" href="/auth/login" onclick="location.assign(location.origin + '/auth/login'); return false;">Login</a></li>
+  <li class="nav-item"><a class="nav-link" href="/auth/register" onclick="location.assign(location.origin + '/auth/register'); return false;">Register</a></li>
+</ul>
+{% endblock %}
+
+{% block nav_right %}
+<div class="d-lg-block d-none">
+  <a href="/auth/register" class="btn btn-style btn-secondary ml-lg-3" onclick="location.assign(location.origin + '/auth/register'); return false;">Get Started</a>
+</div>
+{% endblock %}

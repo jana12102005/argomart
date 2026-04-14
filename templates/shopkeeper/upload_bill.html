@@ -1,0 +1,113 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Upload Bill - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Upload Bill (OCR)</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Upload Bill</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label>Bill type</label>
+        <select id="billType" class="form-control">
+          <option value="purchase">Purchase</option>
+          <option value="sale">Sale</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Bill image (PNG/JPG)</label>
+        <input type="file" id="billImage" class="form-control-file" accept="image/png,image/jpeg,image/jpg">
+      </div>
+      <button type="button" id="btnExtract" class="btn btn-style btn-primary">Extract with OCR</button>
+      <p class="mt-2 text-muted small">AI will extract fertilizer names, quantities, and prices. You can edit below before applying.</p>
+    </div>
+  </div>
+  <div id="ocrResult" class="mt-4" style="display:none;">
+    <h5>Extracted items — edit if needed, then Apply to inventory</h5>
+    <p class="small text-muted">Match each row to a fertilizer from the list. Set fertilizer_id to the correct ID.</p>
+    <div class="table-responsive">
+      <table class="table table-bordered" id="itemsTable">
+        <thead><tr><th>Product name (OCR)</th><th>Fertilizer</th><th>Qty</th><th>Price/unit</th><th>Total</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <button type="button" id="btnApply" class="btn btn-style btn-secondary">Apply to inventory</button>
+  </div>
+  <div id="msg" class="mt-3"></div>
+</div>
+<script>
+(function() {
+  var savedPath = '';
+  var fertilizers = [];
+  fetch('/api/fertilizers/search').then(function(r) { return r.json(); }).then(function(d) { fertilizers = d.fertilizers || []; });
+
+  document.getElementById('btnExtract').onclick = function() {
+    var file = document.getElementById('billImage').files[0];
+    if (!file) { document.getElementById('msg').innerHTML = '<span class="text-danger">Select an image first.</span>'; return; }
+    var fd = new FormData();
+    fd.append('bill_image', file);
+    document.getElementById('msg').innerHTML = 'Processing OCR...';
+    fetch('/api/ocr/extract', { method: 'POST', body: fd, credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) { document.getElementById('msg').innerHTML = '<span class="text-danger">' + data.error + '</span>'; return; }
+        savedPath = data.image_path || '';
+        var tbody = document.querySelector('#itemsTable tbody');
+        tbody.innerHTML = '';
+        (data.items || []).forEach(function(it, i) {
+          var tr = document.createElement('tr');
+          var sel = '<select class="form-control form-control-sm fertilizer-select" data-i="' + i + '"><option value="">-- Select --</option>';
+          fertilizers.forEach(function(f) { sel += '<option value="' + f.id + '">' + f.name + ' (' + f.unit + ')</option>'; });
+          sel += '</select>';
+          var qtyVal = it.quantity || 0;
+          var priceVal = it.price_per_unit || 0;
+          var totalVal = it.total_price || (qtyVal * priceVal) || 0;
+          tr.innerHTML = '<td><input type="text" class="form-control form-control-sm name" value="' + (it.name || '') + '" readonly></td>' +
+            '<td>' + sel + '</td>' +
+            '<td><input type="number" step="0.01" class="form-control form-control-sm qty" value="' + qtyVal + '"></td>' +
+            '<td><input type="number" step="0.01" class="form-control form-control-sm price" value="' + priceVal + '"></td>' +
+            '<td><input type="number" step="0.01" class="form-control form-control-sm total" value="' + totalVal + '" readonly></td>';
+          tbody.appendChild(tr);
+        });
+        document.getElementById('ocrResult').style.display = 'block';
+        document.getElementById('msg').innerHTML = '<span class="text-success">Extraction done. Review and apply.</span>';
+      })
+      .catch(function() { document.getElementById('msg').innerHTML = '<span class="text-danger">Request failed.</span>'; });
+  };
+
+  document.getElementById('btnApply').onclick = function() {
+    var rows = document.querySelectorAll('#itemsTable tbody tr');
+    var items = [];
+    rows.forEach(function(tr) {
+      var fid = tr.querySelector('.fertilizer-select').value;
+      var qty = parseFloat(tr.querySelector('.qty').value) || 0;
+      var price = parseFloat(tr.querySelector('.price').value) || 0;
+      if (fid && qty) items.push({ fertilizer_id: parseInt(fid), quantity: qty, price_per_unit: price });
+    });
+    if (!items.length) { document.getElementById('msg').innerHTML = '<span class="text-danger">Select at least one fertilizer and quantity.</span>'; return; }
+    var payload = { bill_type: document.getElementById('billType').value, items: items, image_path: savedPath };
+    document.getElementById('msg').innerHTML = 'Updating inventory...';
+    fetch('/api/inventory/update-from-bill', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      credentials: 'same-origin'
+    }).then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) { document.getElementById('msg').innerHTML = '<span class="text-danger">' + data.error + '</span>'; return; }
+        document.getElementById('msg').innerHTML = '<span class="text-success">Inventory updated successfully.</span>';
+        document.getElementById('ocrResult').style.display = 'none';
+      })
+      .catch(function() { document.getElementById('msg').innerHTML = '<span class="text-danger">Request failed.</span>'; });
+  };
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Sales - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Sales</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Sales</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <a href="{{ url_for('shopkeeper.record_sale') }}" class="btn btn-style btn-primary mb-4">Record Sale</a>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr><th>#</th><th>Customer</th><th>Amount (₹)</th><th>Payment</th><th>Status</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {% for s in sales %}
+        <tr>
+          <td>{{ s.id }}</td>
+          <td>{{ s.customer_name or 'Walk-in' }}</td>
+          <td>{{ "%.2f"|format(s.amount) }}</td>
+          <td>{{ s.payment_method or '-' }}</td>
+          <td>{{ s.status }}</td>
+          <td>{{ s.created_at.strftime('%Y-%m-%d %H:%M') if s.created_at else '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No sales yet. Record a sale or wait for farmer orders.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

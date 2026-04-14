@@ -1,0 +1,31 @@
+{% extends "layouts/home_master.html" %}
+{% block title %}Contact - AgroHands AI{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Contact</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Contact</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="contact-form py-5">
+  <div class="container py-lg-5 py-md-4">
+    <h3 class="hny-title mb-lg-5 mb-4">Get in touch</h3>
+    <p>For support or queries about AgroHands AI, reach out via the channels below.</p>
+    <div class="row pt-lg-4">
+      <div class="col-lg-4 col-md-6 mt-4">
+        <div class="contact-address">
+          <ul>
+            <li class="icon-color"><span class="fa fa-envelope-open-o"></span>
+              <span>Agromart Support</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

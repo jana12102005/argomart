@@ -1,0 +1,37 @@
+{% extends "layouts/user_master.html" %}
+{% block title %}My Orders - Farmer{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">My Orders</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('farmer.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Orders</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr><th>Date</th><th>Shop</th><th>Amount (₹)</th><th>Payment</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td>{{ o.created_at.strftime('%Y-%m-%d %H:%M') if o.created_at else '-' }}</td>
+          <td>{{ o.shop_name }}</td>
+          <td>{{ "%.2f"|format(o.amount) }}</td>
+          <td>{{ o.payment_method or 'upi_demo' }}</td>
+          <td>{{ o.status or 'completed' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No orders yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

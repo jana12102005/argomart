@@ -1,0 +1,38 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Purchase / Sale Bills - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Bills</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('shopkeeper.dashboard') }}">Dashboard</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Bills</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <a href="{{ url_for('shopkeeper.upload_bill') }}" class="btn btn-style btn-primary mb-4">Upload Purchase Bill (OCR)</a>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr><th>#</th><th>Type</th><th>Total (₹)</th><th>Status</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {% for b in bills %}
+        <tr>
+          <td>{{ b.id }}</td>
+          <td>{{ b.bill_type }}</td>
+          <td>{{ "%.2f"|format(b.total_amount or 0) }}</td>
+          <td>{{ b.status }}</td>
+          <td>{{ b.created_at.strftime('%Y-%m-%d %H:%M') if b.created_at else '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No bills yet. Upload a purchase or sale bill from Upload Bill (OCR).</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

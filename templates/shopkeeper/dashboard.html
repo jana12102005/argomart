@@ -1,0 +1,73 @@
+{% extends "layouts/admin_master.html" %}
+{% block title %}Dashboard - Shopkeeper{% endblock %}
+{% block content %}
+<section class="w3l-about-breadcrumb text-left">
+  <div class="breadcrumb-bg breadcrumb-bg-about py-sm-5 py-4">
+    <div class="container py-2">
+      <h2 class="title">Dashboard</h2>
+      <ul class="breadcrumbs-custom-path mt-2">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2"></span> Shopkeeper</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  {% if shop %}
+  <p class="mb-4"><strong>Shop:</strong> {{ shop.name }} {% if shop.address %}({{ shop.address }}){% endif %}</p>
+  {% endif %}
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card border-primary">
+        <div class="card-body">
+          <h5 class="card-title">Today's Sales</h5>
+          <p class="card-text display-4">{{ today_sales }}</p>
+          <small>orders</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-success">
+        <div class="card-body">
+          <h5 class="card-title">Today's Revenue</h5>
+          <p class="card-text display-4">₹{{ "%.2f"|format(today_revenue) }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('shopkeeper.upload_bill') }}" class="btn btn-style btn-primary btn-block mt-2">Upload Purchase Bill (OCR)</a>
+      <a href="{{ url_for('shopkeeper.bills') }}" class="btn btn-outline-primary btn-block mt-2">Bills</a>
+      <a href="{{ url_for('shopkeeper.inventory') }}" class="btn btn-style btn-secondary btn-block mt-2">Inventory</a>
+      <a href="{{ url_for('shopkeeper.inventory_add') }}" class="btn btn-outline-secondary btn-block mt-2">Add Stock</a>
+      <a href="{{ url_for('shopkeeper.record_sale') }}" class="btn btn-outline-secondary btn-block mt-2">Record Sale</a>
+      <a href="{{ url_for('shopkeeper.sales') }}" class="btn btn-outline-secondary btn-block mt-2">Sales</a>
+      <a href="{{ url_for('shopkeeper.reports') }}" class="btn btn-outline-secondary btn-block mt-2">Reports</a>
+    </div>
+  </div>
+
+  {% if low_stock %}
+  <div class="alert alert-warning">
+    <h5>Low stock</h5>
+    <ul class="mb-0">
+      {% for item in low_stock %}
+      <li>{{ item.name }}: {{ item.quantity }} {{ item.unit }} (₹{{ item.price_per_unit }}/unit)</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if alerts %}
+  <div class="card mb-4">
+    <div class="card-header">Alerts</div>
+    <ul class="list-group list-group-flush">
+      {% for a in alerts %}
+      <li class="list-group-item d-flex justify-content-between">
+        <span>{{ a.message }}</span>
+        <a href="{{ url_for('shopkeeper.mark_alert_read', aid=a.id) }}">Mark read</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
