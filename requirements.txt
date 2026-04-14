@@ -5,3 +5,4 @@ bcrypt==4.1.1
 cryptography==41.0.7
 Pillow>=10.3.0
 Werkzeug==3.0.1
+gunicorn==21.2.0
